@@ -82,5 +82,5 @@ int stack<T>::size()
 template <typename T>
 bool stack<T>::empty()
 {
-	return (size>0)?true:false;
+	return (size==0)?true:false;
 }
