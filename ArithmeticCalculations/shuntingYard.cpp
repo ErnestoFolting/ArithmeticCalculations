@@ -14,8 +14,7 @@ string getInput(int argc, char* argv[]) {
     cout << "Check" << endl;
     return str;
 }
-
-string tocken(string str) {
+string tocken(string& str) {
     int k = 0;
     string tock;
     while (isdigit(str[k])) {
@@ -23,9 +22,29 @@ string tocken(string str) {
     }
     if (k == 0) {
         tock = str.substr(0, 1);
+        str.erase(0, 1);
     }
     else {
         tock = str.substr(0, k);
+        str.erase(0, k);
     }
     return tock;
+}
+int calculate(string str) {
+    double res = 0;
+    stack<double> numbers;
+    stack<char> operations;
+    while (str.length() != 0) {
+        string temp = tocken(str);
+        if (temp.length()>1) {
+            numbers.push(stof(temp));
+        }
+        else if (temp.length() == 1 && isdigit(temp[0])) {
+            numbers.push(stof(temp));
+        }
+        else {
+            operations.push(temp[0]);
+        }
+    }
+    return res;
 }
