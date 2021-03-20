@@ -32,7 +32,7 @@ itsSize(0), addedCapacity(capacity), itsCapacity(addedCapacity), itsData(new T[i
 template <typename T>
 void stack<T>::push(T data)
 {
-	if(size==0)
+	if(itsSize==0)
 	{
 		itsData[0]=data;
 	}
