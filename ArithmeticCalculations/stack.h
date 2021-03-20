@@ -7,12 +7,26 @@ private:
 	int itsSize;
 	int itsCapacity;
 public:
+	stack();
+	stack(int capacity);
 	void push(T data);
 	void pop();
 	const T & top();
 	int size();
 	bool empty();
 };
+
+template <typename T>
+stack<T>::stack():
+itsSize(0), itsCapacity(20)
+{}
+
+template <typename T>
+stack<T>::stack(int capacity):
+itsSize(0), itsCapacity(capacity)
+{}
+
+
 
 template <typename T>
 void stack<T>::push(T data)
