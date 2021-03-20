@@ -4,3 +4,4 @@
 #include <iomanip>
 using namespace std;
 string getInput(int argc, char* argv[]);
+string tocken(string str);

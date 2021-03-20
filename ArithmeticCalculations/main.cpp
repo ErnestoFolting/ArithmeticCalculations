@@ -5,4 +5,7 @@
 int main(int argc, char *argv[])
 {
     string str = getInput(argc, argv);
+    cout << "str:" << str << endl;
+    string tock = tocken(str);
+    cout << tock << endl;
 }
