@@ -60,13 +60,17 @@ void stack<T>::push(T data)
 template <typename T>
 void stack<T>::pop()
 {
-	
+	if(itsSize!=0)
+	{
+		itsSize--;
+		itsCurrent--;
+	}
 }
 
 template <typename T>
 const T & stack<T>::top()
 {
-	
+	return itsData[itsCurrent];
 }
 
 template <typename T>
