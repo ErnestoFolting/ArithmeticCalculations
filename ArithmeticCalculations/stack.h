@@ -7,7 +7,7 @@ private:
 	int itsSize;
 	const int addedCapacity;
 	int itsCapacity;
-	int * itsData;
+	T * itsData;
 	int itsCurrent; 
 public:
 	stack();
