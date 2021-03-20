@@ -44,7 +44,7 @@ void stack<T>::push(T data)
 	else if(itsSize==itsCapacity)
 	{
 		itsCapacity+=addedCapacity;
-		int * newData=new T[itsCapacity];
+		T * newData=new T[itsCapacity];
 		for(int i=0;i<itsCurrent;i++)
 		{
 			newData[i]=itsData[i];
