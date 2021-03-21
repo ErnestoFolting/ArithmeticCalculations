@@ -38,12 +38,12 @@ double operate(double x1, double x2, char operation ) {
     if (operation == '*') return x1 * x2;
 }
 double calculate(string str) {
-    double res = 0;
+    double result = 0;
     stack<double> numbers;
     stack<char> operations;
     while (str.length() != 0) {
         string temp = tocken(str);
-        if (temp.length()>1 || temp.length() == 1 && isdigit(temp[0])) {
+        if (temp.length()>=1 && isdigit(temp[0])) {
             numbers.push(stof(temp));
         }
         else {
@@ -51,17 +51,17 @@ double calculate(string str) {
                 operations.push(temp[0]);
             }
             else {
-                operation curOp(temp[0]);
-                operation prevOp(operations.top());
-                while (curOp.prior <= prevOp.prior || !(operations.empty())) {
-                    double curNum = numbers.top();
+                operation curentOperation(temp[0]);
+                operation previousOperation(operations.top());
+                while (curentOperation.priority <= curentOperation.priority || !(operations.empty())) {
+                    double currentNumber = numbers.top();
                     numbers.pop();
-                    double prevNum = numbers.top();
+                    double previousNumber = numbers.top();
                     numbers.pop();
-                    double res = operate(prevNum, curNum, prevOp.name);
-                    numbers.push(res);
+                    double result = operate(previousNumber, currentNumber, previousOperation.name);
+                    numbers.push(result);
                     operations.pop();
-                    if(!operations.empty()) operation prevOp(operations.top());
+                    if(!operations.empty()) operation previousOperation(operations.top());
                 }
             }
             operations.push(temp[0]);
@@ -71,5 +71,5 @@ double calculate(string str) {
         cout << "Operation:" << operations.top() << endl;
         operations.pop();
     }
-    return res;
+    return result;
 }

@@ -2,22 +2,22 @@
 #include <iostream>
 using namespace std;
 struct operation {
-    int prior;
+    int priority;
     char name;
     operation(const char x) {
         if (x == '-') {
             name = x;
-            prior = 1;
+            priority = 1;
         }
         else if (x == '+') {
             name = x;
-            prior = 1;
+            priority = 1;
         }else if (x == '*') {
             name = x;
-            prior = 2;
+            priority = 2;
         }else if (x == '/') {
             name = x;
-            prior = 2;
+            priority = 2;
         }
     }
 };

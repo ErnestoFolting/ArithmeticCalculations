@@ -21,12 +21,14 @@ public:
 
 template <typename T>
 stack<T>::stack():
-itsSize(0), addedCapacity(20), itsCapacity(addedCapacity),  itsData(new T[itsCapacity]), itsCurrent(0)
+itsSize(0), addedCapacity(20), itsCapacity(addedCapacity),
+itsData(new T[itsCapacity]), itsCurrent(0)
 {}
 
 template <typename T>
 stack<T>::stack(int capacity):
-itsSize(0), addedCapacity(capacity), itsCapacity(addedCapacity), itsData(new T[itsCapacity]), itsCurrent(0)
+itsSize(0), addedCapacity(capacity), itsCapacity(addedCapacity),
+itsData(new T[itsCapacity]), itsCurrent(0)
 {}
 
 template <typename T>
@@ -34,25 +36,25 @@ void stack<T>::push(T data)
 {
 	if(itsSize==0)
 	{
-		itsData[0]=data;
+		itsData[0] = data;
 	}
-	else if(itsSize!=itsCapacity)
+	else if(itsSize != itsCapacity)
 	{
 		itsCurrent++;
-		itsData[itsCurrent]=data;
+		itsData[itsCurrent] = data;
 	}
-	else if(itsSize==itsCapacity)
+	else if(itsSize == itsCapacity)
 	{
-		itsCapacity+=addedCapacity;
-		T * newData=new T[itsCapacity];
-		for(int i=0;i<itsCurrent;i++)
+		itsCapacity += addedCapacity;
+		T * newData = new T[itsCapacity];
+		for(int i = 0;i < itsCurrent;i++)
 		{
-			newData[i]=itsData[i];
+			newData[i] = itsData[i];
 		}
 		delete itsData;
-		itsData=newData;
+		itsData = newData;
 		itsCurrent++;
-		itsData[itsCurrent]=data;
+		itsData[itsCurrent] = data;
 	}
 	itsSize++;
 }
@@ -60,7 +62,7 @@ void stack<T>::push(T data)
 template <typename T>
 void stack<T>::pop()
 {
-	if(itsSize!=0)
+	if(itsSize != 0)
 	{
 		itsSize--;
 		itsCurrent--;
@@ -82,5 +84,5 @@ int stack<T>::size()
 template <typename T>
 bool stack<T>::empty()
 {
-	return (itsSize==0)?true:false;
+	return (itsSize == 0)?true:false;
 }
