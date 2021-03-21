@@ -67,10 +67,14 @@ double calculate(string str) {
             
         }
     }
-    cout << "Stack size:" << numbers.size() << endl;
-    while (!numbers.empty()) {
-        cout << "Element: " << numbers.top();
+    while (!operations.empty()) {
+        double currentNumber = numbers.top();
         numbers.pop();
+        double previousNumber = numbers.top();
+        numbers.pop();
+        double result = operate(previousNumber, currentNumber, operations.top());
+        numbers.push(result);
+        operations.pop();
     }
-    return 0;
+    return numbers.top();
 }
