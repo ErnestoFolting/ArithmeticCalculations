@@ -1,5 +1,6 @@
 #include "shuntingYard.h"
 #include "stack.h"
+#include "operation.h"
 
 string getInput(int argc, char* argv[]) {
     string str;
@@ -30,7 +31,7 @@ string tocken(string& str) {
     }
     return tock;
 }
-int calculate(string str) {
+double calculate(string str) {
     double res = 0;
     stack<double> numbers;
     stack<char> operations;
@@ -43,8 +44,14 @@ int calculate(string str) {
             numbers.push(stof(temp));
         }
         else {
+            operation cur(temp[0]);
+            cout << "Priority: " << cur.prior << endl;
             operations.push(temp[0]);
         }
+    }
+    while (!operations.empty()) {
+        cout << "Operation:" << operations.top() << endl;
+        operations.pop();
     }
     return res;
 }

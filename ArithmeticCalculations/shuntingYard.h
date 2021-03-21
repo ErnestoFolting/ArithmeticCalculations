@@ -5,4 +5,4 @@
 using namespace std;
 string getInput(int argc, char* argv[]);
 string tocken(string& str);
-int calculate(string str);
+double calculate(string str);
