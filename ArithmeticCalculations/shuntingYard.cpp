@@ -31,21 +31,39 @@ string tocken(string& str) {
     }
     return tock;
 }
+double operate(double x1, double x2, char operation ) {
+    if (operation == '+') return x1 + x2;
+    if (operation == '-') return x1 - x2;
+    if (operation == '/') return x1 / x2;
+    if (operation == '*') return x1 * x2;
+}
 double calculate(string str) {
     double res = 0;
     stack<double> numbers;
     stack<char> operations;
     while (str.length() != 0) {
         string temp = tocken(str);
-        if (temp.length()>1) {
-            numbers.push(stof(temp));
-        }
-        else if (temp.length() == 1 && isdigit(temp[0])) {
+        if (temp.length()>1 || temp.length() == 1 && isdigit(temp[0])) {
             numbers.push(stof(temp));
         }
         else {
-            operation cur(temp[0]);
-            cout << "Priority: " << cur.prior << endl;
+            if (operations.empty()) {
+                operations.push(temp[0]);
+            }
+            else {
+                operation curOp(temp[0]);
+                operation prevOp(operations.top());
+                while (curOp.prior <= prevOp.prior || !(operations.empty())) {
+                    double curNum = numbers.top();
+                    numbers.pop();
+                    double prevNum = numbers.top();
+                    numbers.pop();
+                    double res = operate(prevNum, curNum, prevOp.name);
+                    numbers.push(res);
+                    operations.pop();
+                    if(!operations.empty()) operation prevOp(operations.top());
+                }
+            }
             operations.push(temp[0]);
         }
     }
