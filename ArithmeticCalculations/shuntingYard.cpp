@@ -38,7 +38,6 @@ double operate(double x1, double x2, char operation ) {
     if (operation == '*') return x1 * x2;
 }
 double calculate(string str) {
-    double result = 0;
     stack<double> numbers;
     stack<char> operations;
     while (str.length() != 0) {
@@ -53,7 +52,7 @@ double calculate(string str) {
             else {
                 operation curentOperation(temp[0]);
                 operation previousOperation(operations.top());
-                while (curentOperation.priority <= curentOperation.priority || !(operations.empty())) {
+                while (curentOperation.priority <= previousOperation.priority &&  !(operations.empty())) {
                     double currentNumber = numbers.top();
                     numbers.pop();
                     double previousNumber = numbers.top();
@@ -61,15 +60,17 @@ double calculate(string str) {
                     double result = operate(previousNumber, currentNumber, previousOperation.name);
                     numbers.push(result);
                     operations.pop();
-                    if(!operations.empty()) operation previousOperation(operations.top());
+                    if(!operations.empty()) previousOperation = operations.top();
                 }
+                operations.push(temp[0]);
             }
-            operations.push(temp[0]);
+            
         }
     }
-    while (!operations.empty()) {
-        cout << "Operation:" << operations.top() << endl;
-        operations.pop();
+    cout << "Stack size:" << numbers.size() << endl;
+    while (!numbers.empty()) {
+        cout << "Element: " << numbers.top();
+        numbers.pop();
     }
-    return result;
+    return 0;
 }
