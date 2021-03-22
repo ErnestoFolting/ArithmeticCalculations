@@ -1,6 +1,7 @@
 #include "shuntingYard.h"
 #include "stack.h"
 #include "operation.h"
+#include <iostream>
 
 string getInput(int argc, char* argv[]) {
     string str;
@@ -9,10 +10,10 @@ string getInput(int argc, char* argv[]) {
             str += argv[i][j];
         }
     }
-    for (int i = 0; i < str.length(); i++) {
+    /*for (int i = 0; i < str.length(); i++) {
         cout << str[i] << endl;
     }
-    cout << "Check" << endl;
+    cout << "Check" << endl;*/
     return str;
 }
 string tocken(string& str) {

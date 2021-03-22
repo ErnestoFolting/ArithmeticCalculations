@@ -1,6 +1,5 @@
 #pragma once
-#include <iostream>
-using namespace std;
+
 struct operation {
     int priority;
     char name;
