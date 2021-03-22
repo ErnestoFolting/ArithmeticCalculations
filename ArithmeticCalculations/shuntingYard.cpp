@@ -51,13 +51,13 @@ double calculate(string str) {
                 operations.push(temp[0]);
             }
             else {
-                operation curentOperation(temp[0]);
+                operation currentOperation(temp[0]);
                 operation previousOperation(operations.top());
-            	if((curentOperation.name == '(')||(previousOperation.name == '('))
+            	if((currentOperation.name == '(')||(previousOperation.name == '('))
             	{
-            		operations.push(curentOperation.name);
+            		operations.push(currentOperation.name);
             	}
-                else if(curentOperation.name==')')
+                else if(currentOperation.name==')')
             	{
             		while (previousOperation.name!='(')
                     {
@@ -74,7 +74,7 @@ double calculate(string str) {
             	}
                 else
                 {
-	                while (curentOperation.priority <= previousOperation.priority &&  !(operations.empty()))
+	                while (currentOperation.priority <= previousOperation.priority &&  !(operations.empty()))
                     {
 		                double currentNumber = numbers.top();
 			            numbers.pop();
