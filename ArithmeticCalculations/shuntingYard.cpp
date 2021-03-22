@@ -34,11 +34,19 @@ string tocken(string& str) {
     return tock;
 }
 double operate(double x1, double x2, char operation ) {
-    if (operation == '+') return x1 + x2;
-    if (operation == '-') return x1 - x2;
-    if (operation == '/') return x1 / x2;
-    if (operation == '*') return x1 * x2;
-	if (operation == '^') return pow(x1, x2);
+	switch(operation)
+	{
+    case '+':
+        return x1 + x2;
+	case '-':
+        return x1 - x2;
+	case '*':
+        return x1*x2;
+	case '/':
+        return x1/x2;
+	case '^':
+        return pow(x1, x2);
+	}
 }
 
 double calculate(string str) {
