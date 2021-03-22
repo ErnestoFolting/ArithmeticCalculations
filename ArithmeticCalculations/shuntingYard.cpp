@@ -2,6 +2,7 @@
 #include "stack.h"
 #include "operation.h"
 #include <iostream>
+#include <cmath>
 
 string getInput(int argc, char* argv[]) {
     string str;
@@ -37,7 +38,9 @@ double operate(double x1, double x2, char operation ) {
     if (operation == '-') return x1 - x2;
     if (operation == '/') return x1 / x2;
     if (operation == '*') return x1 * x2;
+	if (operation == '^') return pow(x1, x2);
 }
+
 double calculate(string str) {
     stack<double> numbers;
     stack<char> operations;
