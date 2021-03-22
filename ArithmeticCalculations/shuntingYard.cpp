@@ -53,17 +53,40 @@ double calculate(string str) {
             else {
                 operation curentOperation(temp[0]);
                 operation previousOperation(operations.top());
-                while (curentOperation.priority <= previousOperation.priority &&  !(operations.empty())) {
-                    double currentNumber = numbers.top();
-                    numbers.pop();
-                    double previousNumber = numbers.top();
-                    numbers.pop();
-                    double result = operate(previousNumber, currentNumber, previousOperation.name);
-                    numbers.push(result);
-                    operations.pop();
-                    if(!operations.empty()) previousOperation = operations.top();
+            	if((curentOperation.name == '(')||(previousOperation.name == '('))
+            	{
+            		operations.push(curentOperation.name);
+            	}
+                else if(curentOperation.name==')')
+            	{
+            		while (previousOperation.name!='(')
+                    {
+		                double currentNumber = numbers.top();
+			            numbers.pop();
+				        double previousNumber = numbers.top();
+					    numbers.pop();
+						double result = operate(previousNumber, currentNumber, previousOperation.name);
+		                numbers.push(result);
+		                operations.pop();
+			            if(!operations.empty()) previousOperation = operations.top();
+				    }
+					operations.pop();
+            	}
+                else
+                {
+	                while (curentOperation.priority <= previousOperation.priority &&  !(operations.empty()))
+                    {
+		                double currentNumber = numbers.top();
+			            numbers.pop();
+				        double previousNumber = numbers.top();
+					    numbers.pop();
+						double result = operate(previousNumber, currentNumber, previousOperation.name);
+		                numbers.push(result);
+		                operations.pop();
+			            if(!operations.empty()) previousOperation = operations.top();
+				    }
+					operations.push(temp[0]);
                 }
-                operations.push(temp[0]);
             }
             
         }
