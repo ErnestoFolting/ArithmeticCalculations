@@ -11,10 +11,6 @@ string getInput(int argc, char* argv[]) {
             str += argv[i][j];
         }
     }
-    /*for (int i = 0; i < str.length(); i++) {
-        cout << str[i] << endl;
-    }
-    cout << "Check" << endl;*/
     return str;
 }
 string tocken(string& str) {
@@ -54,7 +50,12 @@ double calculate(string str) {
     stack<char> operations;
     while (str.length() != 0) {
         string temp = tocken(str);
-        if (temp.length()>=1 && isdigit(temp[0])) {
+        if (numbers.empty() && operations.empty() && temp[0] == '-') {
+            string temp2 = tocken(str);
+            int tempRes = stoi(temp2) * (-1);
+            numbers.push(tempRes);
+        }
+        else if (temp.length()>=1 && isdigit(temp[0])) {
             numbers.push(stof(temp));
         }
         else {
@@ -64,7 +65,12 @@ double calculate(string str) {
             else {
                 operation currentOperation(temp[0]);
                 operation previousOperation(operations.top());
-                if (previousOperation.name == '(' && currentOperation.name == ')') {
+                if (currentOperation.name == '-' && (previousOperation.name == '(' || previousOperation.name == '+' || previousOperation.name == '*' || previousOperation.name == '/' || previousOperation.name == '^' )) {
+                    string temp2 = tocken(str);
+                    int tempRes = stoi(temp2) * (-1);
+                    numbers.push(tempRes);
+                }
+                else if (previousOperation.name == '(' && currentOperation.name == ')') {
                     operations.pop();
                 }
                 else if((currentOperation.name == '(')||(previousOperation.name == '('))
