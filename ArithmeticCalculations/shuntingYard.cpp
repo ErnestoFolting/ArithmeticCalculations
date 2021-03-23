@@ -64,7 +64,10 @@ double calculate(string str) {
             else {
                 operation currentOperation(temp[0]);
                 operation previousOperation(operations.top());
-            	if((currentOperation.name == '(')||(previousOperation.name == '('))
+                if (previousOperation.name == '(' && currentOperation.name == ')') {
+                    operations.pop();
+                }
+                else if((currentOperation.name == '(')||(previousOperation.name == '('))
             	{
             		operations.push(currentOperation.name);
             	}
