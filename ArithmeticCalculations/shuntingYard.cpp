@@ -52,8 +52,10 @@ double calculate(string str) {
         string temp = tocken(str);
         if (numbers.empty() && operations.empty() && temp[0] == '-') {
             string temp2 = tocken(str);
-            int tempRes = stoi(temp2) * (-1);
-            numbers.push(tempRes);
+            if (isdigit(temp2[0])) {
+                int tempRes = stoi(temp2) * (-1);
+                numbers.push(tempRes);
+            }
         }
         else if (temp.length()>=1 && isdigit(temp[0])) {
             numbers.push(stof(temp));
@@ -65,6 +67,24 @@ double calculate(string str) {
             else {
                 operation currentOperation(temp[0]);
                 operation previousOperation(operations.top());
+                if (currentOperation.name == '-' && previousOperation.name == '-') {
+                    string copy = str;
+                    int count = 2;
+                    string temp = tocken(copy);
+                    while (!isdigit(temp[0])) {
+                        count++;
+                        temp = tocken(copy);
+                    }
+                    int temp2 = stoi(temp);
+                    if (count % 2) {
+                        temp2 = stoi(temp) * (-1);
+                    }
+                    numbers.push(temp2);
+                    operations.pop();
+                    if (!numbers.empty()) {
+                        operations.push('+');
+                    }
+                }
                 if (currentOperation.name == '-' && (previousOperation.name == '(' || previousOperation.name == '+' || previousOperation.name == '*' || previousOperation.name == '/' || previousOperation.name == '^' )) {
                     string temp2 = tocken(str);
                     int tempRes = stoi(temp2) * (-1);
