@@ -48,13 +48,18 @@ double operate(double x1, double x2, char operation ) {
 double calculate(string str) {
     stack<double> numbers;
     stack<char> operations;
+    if (str[0] == '-') {
+        str = '0' + str;
+    }
     while (str.length() != 0) {
         string temp = tocken(str);
         if (numbers.empty() && operations.empty() && temp[0] == '-') {
-            string temp2 = tocken(str);
+            string copy = str;
+            string temp2 = tocken(copy);
             if (isdigit(temp2[0])) {
                 int tempRes = stoi(temp2) * (-1);
                 numbers.push(tempRes);
+                tocken(str);
             }
         }
         else if (temp.length()>=1 && isdigit(temp[0])) {
