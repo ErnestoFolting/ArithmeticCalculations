@@ -52,7 +52,20 @@ double operate(double x1, double x2, char operation ) {
 double calculate(string str) {
     stack<double> numbers;
     stack<char> operations;
-    while (str.length() != 0) {
+	for(int i=0;i<static_cast<int>(str.length())-1;i++)
+	{
+        if((str[i]=='(')&&(str[i+1]=='-'))
+	    {
+		    str.insert(i+1, "0");
+	    }
+	}
+	if(str[0]=='-')
+	{
+		str='0'+str;
+	}
+	cout<<str<<endl;
+    while (str.length() != 0)
+    {
         string temp = tocken(str);
         if (temp.length()>=1 && isdigit(temp[0])) {
             numbers.push(stof(temp));
