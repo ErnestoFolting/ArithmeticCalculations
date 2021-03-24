@@ -13,6 +13,7 @@ string getInput(int argc, char* argv[]) {
     }
     return str;
 }
+
 string tocken(string& str) {
     int k = 0;
     string tock;
@@ -29,6 +30,18 @@ string tocken(string& str) {
     }
     return tock;
 }
+
+void doBinaryOperation(stack<double>& numbers, stack<char>& operations, char operation)
+{
+	double currentNumber = numbers.top();
+    numbers.pop();
+    double previousNumber = numbers.top();
+    numbers.pop();
+	double result = operate(previousNumber, currentNumber, operation);
+	numbers.push(result);
+	operations.pop();
+}
+
 double operate(double x1, double x2, char operation ) {
 	switch(operation)
 	{
@@ -59,49 +72,31 @@ double calculate(string str) {
 	{
 		str='0'+str;
 	}
-	cout<<str<<endl;
     while (str.length() != 0)
     {
-        string temp = tocken(str);
-        string copy = str;
-        string temp2 = tocken(copy);
-        string temp3= tocken(copy);
-        if ((temp == "(" || temp == "*" || temp == "/" || temp == "+") && temp2 == "-") {
-            if (isdigit((temp3)[0])) {
-                int tempRes = stoi(temp3)*(-1);
+        string currentTocken = tocken(str);
+        string copyStr = str;
+        string nextTockenFromCopy = tocken(copyStr);
+        string tockenAfterNextTocken= tocken(copyStr);
+        if ((currentTocken == "(" || currentTocken == "*" || currentTocken == "/" || currentTocken == "+") && nextTockenFromCopy == "-") {
+            if (isdigit((tockenAfterNextTocken)[0])) {
+                int tempRes = stoi(tockenAfterNextTocken)*(-1);
                 numbers.push(tempRes);
-                operations.push('(');
+                operations.push(currentTocken[0]);
                 tocken(str);
                 tocken(str);
             }
-        }else if (temp.length()>=1 && isdigit(temp[0])) {
-            numbers.push(stof(temp));
+        }
+    	else if (currentTocken.length()>=1 && isdigit(currentTocken[0])) {
+            numbers.push(stof(currentTocken));
         }
         else {
             if (operations.empty()) {
-                operations.push(temp[0]);
+                operations.push(currentTocken[0]);
             }
             else {
-                operation currentOperation(temp[0]);
+                operation currentOperation(currentTocken[0]);
                 operation previousOperation(operations.top());
-                if (currentOperation.name == '-' && previousOperation.name == '-') {
-                    string copy = str;
-                    int count = 2;
-                    string temp = tocken(copy);
-                    while (!isdigit(temp[0])) {
-                        count++;
-                        temp = tocken(copy);
-                    }
-                    int temp2 = stoi(temp);
-                    if (count % 2) {
-                        temp2 = stoi(temp) * (-1);
-                    }
-                    numbers.push(temp2);
-                    operations.pop();
-                    if (!numbers.empty()) {
-                        operations.push('+');
-                    }
-                }
                 if (previousOperation.name == '(' && currentOperation.name == ')') {
                     operations.pop();
                 }
@@ -113,13 +108,7 @@ double calculate(string str) {
             	{
             		while (previousOperation.name!='(')
                     {
-		                double currentNumber = numbers.top();
-			            numbers.pop();
-				        double previousNumber = numbers.top();
-					    numbers.pop();
-						double result = operate(previousNumber, currentNumber, previousOperation.name);
-		                numbers.push(result);
-		                operations.pop();
+		                doBinaryOperation(numbers, operations, previousOperation.name);
 			            if(!operations.empty()) previousOperation = operations.top();
 				    }
 					operations.pop();
@@ -128,32 +117,17 @@ double calculate(string str) {
                 {
 	                while (currentOperation.priority <= previousOperation.priority &&  !(operations.empty()) &&(previousOperation.name!='('))
                     {
-		                double currentNumber = numbers.top();
-			            numbers.pop();
-				        double previousNumber = numbers.top();
-					    numbers.pop();
-						double result = operate(previousNumber, currentNumber, previousOperation.name);
-		                numbers.push(result);
-		                operations.pop();
-                        if (!operations.empty()) {
-                            previousOperation = operations.top();
-                        }
+		                doBinaryOperation(numbers, operations, previousOperation.name);
+                        if (!operations.empty()) previousOperation = operations.top();
 				    }
-					operations.push(temp[0]);
-                    cout << "Temp:" << temp[0] << endl;
+					operations.push(currentTocken[0]);
                 }
             }
             
         }
     }
     while (!operations.empty()) {
-        double currentNumber = numbers.top();
-        numbers.pop();
-        double previousNumber = numbers.top();
-        numbers.pop();
-        double result = operate(previousNumber, currentNumber, operations.top());
-        numbers.push(result);
-        operations.pop();
+        doBinaryOperation(numbers, operations, operations.top());
     }
     return numbers.top();
 }
