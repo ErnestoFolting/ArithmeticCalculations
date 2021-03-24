@@ -11,10 +11,6 @@ string getInput(int argc, char* argv[]) {
             str += argv[i][j];
         }
     }
-    /*for (int i = 0; i < str.length(); i++) {
-        cout << str[i] << endl;
-    }
-    cout << "Check" << endl;*/
     return str;
 }
 string tocken(string& str) {
@@ -67,7 +63,18 @@ double calculate(string str) {
     while (str.length() != 0)
     {
         string temp = tocken(str);
-        if (temp.length()>=1 && isdigit(temp[0])) {
+        string copy = str;
+        string temp2 = tocken(copy);
+        string temp3= tocken(copy);
+        if ((temp == "(" || temp == "*" || temp == "/" || temp == "+") && temp2 == "-") {
+            if (isdigit((temp3)[0])) {
+                int tempRes = stoi(temp3)*(-1);
+                numbers.push(tempRes);
+                operations.push('(');
+                tocken(str);
+                tocken(str);
+            }
+        }else if (temp.length()>=1 && isdigit(temp[0])) {
             numbers.push(stof(temp));
         }
         else {
@@ -77,6 +84,24 @@ double calculate(string str) {
             else {
                 operation currentOperation(temp[0]);
                 operation previousOperation(operations.top());
+                if (currentOperation.name == '-' && previousOperation.name == '-') {
+                    string copy = str;
+                    int count = 2;
+                    string temp = tocken(copy);
+                    while (!isdigit(temp[0])) {
+                        count++;
+                        temp = tocken(copy);
+                    }
+                    int temp2 = stoi(temp);
+                    if (count % 2) {
+                        temp2 = stoi(temp) * (-1);
+                    }
+                    numbers.push(temp2);
+                    operations.pop();
+                    if (!numbers.empty()) {
+                        operations.push('+');
+                    }
+                }
                 if (previousOperation.name == '(' && currentOperation.name == ')') {
                     operations.pop();
                 }
@@ -110,9 +135,12 @@ double calculate(string str) {
 						double result = operate(previousNumber, currentNumber, previousOperation.name);
 		                numbers.push(result);
 		                operations.pop();
-			            if(!operations.empty()) previousOperation = operations.top();
+                        if (!operations.empty()) {
+                            previousOperation = operations.top();
+                        }
 				    }
 					operations.push(temp[0]);
+                    cout << "Temp:" << temp[0] << endl;
                 }
             }
             
