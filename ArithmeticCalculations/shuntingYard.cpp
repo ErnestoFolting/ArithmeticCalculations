@@ -101,7 +101,7 @@ double calculate(string str) {
             	}
                 else
                 {
-	                while (currentOperation.priority <= previousOperation.priority &&  !(operations.empty()))
+	                while (currentOperation.priority <= previousOperation.priority &&  !(operations.empty()) &&(previousOperation.name!='('))
                     {
 		                double currentNumber = numbers.top();
 			            numbers.pop();
