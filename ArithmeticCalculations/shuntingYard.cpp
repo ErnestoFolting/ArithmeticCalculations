@@ -1,62 +1,11 @@
-#include "shuntingYard.h"
+#include <iostream>
+#include <string>
 #include "stack.h"
 #include "operation.h"
-#include <iostream>
-#include <cmath>
+#include "doOperations.h"
+#include "inputAndTokens.h"
 
-string getInput(int argc, char* argv[]) {
-    string str;
-    for (int i = 1; i < argc; i++) {
-        for (int j = 0; j < strlen(argv[i]); j++) {
-            str += argv[i][j];
-        }
-    }
-    return str;
-}
-
-string tocken(string& str) {
-    int k = 0;
-    string tock;
-    while (isdigit(str[k])) {
-        k++;
-    }
-    if (k == 0) {
-        tock = str.substr(0, 1);
-        str.erase(0, 1);
-    }
-    else {
-        tock = str.substr(0, k);
-        str.erase(0, k);
-    }
-    return tock;
-}
-
-void doBinaryOperation(stack<double>& numbers, stack<char>& operations, char operation)
-{
-	double currentNumber = numbers.top();
-    numbers.pop();
-    double previousNumber = numbers.top();
-    numbers.pop();
-	double result = operate(previousNumber, currentNumber, operation);
-	numbers.push(result);
-	operations.pop();
-}
-
-double operate(double x1, double x2, char operation ) {
-	switch(operation)
-	{
-    case '+':
-        return x1 + x2;
-	case '-':
-        return x1 - x2;
-	case '*':
-        return x1*x2;
-	case '/':
-        return x1/x2;
-	case '^':
-        return pow(x1, x2);
-	}
-}
+using namespace std;
 
 double calculate(string str) {
     stack<double> numbers;
@@ -74,28 +23,28 @@ double calculate(string str) {
 	}
     while (str.length() != 0)
     {
-        string currentTocken = tocken(str);
+        string currentToken = token(str);
         string copyStr = str;
-        string nextTockenFromCopy = tocken(copyStr);
-        string tockenAfterNextTocken= tocken(copyStr);
-        if ((currentTocken == "(" || currentTocken == "*" || currentTocken == "/" || currentTocken == "+") && nextTockenFromCopy == "-") {
-            if (isdigit((tockenAfterNextTocken)[0])) {
-                int tempRes = stoi(tockenAfterNextTocken)*(-1);
+        string nextTokenFromCopy = token(copyStr);
+        string tokenAfterNextToken= token(copyStr);
+        if ((currentToken == "(" || currentToken == "*" || currentToken == "/" || currentToken == "+") && nextTokenFromCopy == "-") {
+            if (isdigit((tokenAfterNextToken)[0])) {
+                int tempRes = stoi(tokenAfterNextToken)*(-1);
                 numbers.push(tempRes);
-                operations.push(currentTocken[0]);
-                tocken(str);
-                tocken(str);
+                operations.push(currentToken[0]);
+                token(str);
+                token(str);
             }
         }
-    	else if (currentTocken.length()>=1 && isdigit(currentTocken[0])) {
-            numbers.push(stof(currentTocken));
+    	else if (currentToken.length()>=1 && isdigit(currentToken[0])) {
+            numbers.push(stof(currentToken));
         }
         else {
             if (operations.empty()) {
-                operations.push(currentTocken[0]);
+                operations.push(currentToken[0]);
             }
             else {
-                operation currentOperation(currentTocken[0]);
+                operation currentOperation(currentToken[0]);
                 operation previousOperation(operations.top());
                 if (previousOperation.name == '(' && currentOperation.name == ')') {
                     operations.pop();
@@ -120,7 +69,7 @@ double calculate(string str) {
 		                doBinaryOperation(numbers, operations, previousOperation.name);
                         if (!operations.empty()) previousOperation = operations.top();
 				    }
-					operations.push(currentTocken[0]);
+					operations.push(currentToken[0]);
                 }
             }
             

@@ -21,6 +21,12 @@
     <ClCompile Include="shuntingYard.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="doOperations.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="inputAndTokens.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stack.h">
@@ -31,6 +37,12 @@
     </ClInclude>
     <ClInclude Include="operation.h">
       <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="doOperations.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="inputAndTokens.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

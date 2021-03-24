@@ -1,6 +1,9 @@
 ﻿#include <iostream>
 #include <iomanip>
+#include "inputAndTokens.h"
 #include "shuntingYard.h"
+
+using namespace std;
 
 int main(int argc, char *argv[])
 {

@@ -142,8 +142,12 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shuntingYard.cpp" />
+    <ClCompile Include="doOperations.cpp" />
+    <ClCompile Include="inputAndTokens.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="doOperations.h" />
+    <ClInclude Include="inputAndTokens.h" />
     <ClInclude Include="operation.h" />
     <ClInclude Include="shuntingYard.h" />
     <ClInclude Include="stack.h" />
