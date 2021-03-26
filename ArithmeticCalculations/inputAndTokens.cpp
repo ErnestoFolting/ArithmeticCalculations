@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -27,4 +28,27 @@ string token(string& str) {
         str.erase(0, k);
     }
     return tock;
+}
+
+void replaceUnaryOperationsWithSymbols(string & str)
+{
+	if(str[0]=='-')
+	{
+		str[0]='m';
+	}
+	else if(str[0]=='+')
+	{
+		str[0]='p';
+	}
+	for(int i=0;i<static_cast<int>(str.length())-1;i++)
+	{
+        if(((str[i]=='(')||(str[i]=='*')||(str[i]=='/')||(str[i]=='-')||(str[i]=='+')||(str[i]=='m')||(str[i]=='p'))&&(str[i+1]=='-'))
+	    {
+		    str[i+1]='m';
+	    }
+        else if(((str[i]=='(')||(str[i]=='*')||(str[i]=='/')||(str[i]=='-')||(str[i]=='+')||(str[i]=='m')||(str[i]=='p'))&&(str[i+1]=='+'))
+	    {
+		    str[i+1]='p';
+	    }
+	}
 }

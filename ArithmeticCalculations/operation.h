@@ -17,5 +17,9 @@ struct operation {
 		{
 			priority = 3;
 		}
+        else if((x=='p')||(x=='m'))
+        {
+	        priority=4;
+        }
     }
 };

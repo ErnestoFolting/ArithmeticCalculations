@@ -10,34 +10,14 @@ using namespace std;
 double calculate(string str) {
     stack<double> numbers;
     stack<char> operations;
-	for(int i=0;i<static_cast<int>(str.length())-1;i++)
-	{
-        if((str[i]=='(')&&(str[i+1]=='-'))
-	    {
-		    str.insert(i+1, "0");
-	    }
-	}
-	if(str[0]=='-')
-	{
-		str='0'+str;
-	}
+	replaceUnaryOperationsWithSymbols(str);
+	cout<<str<<endl;
     while (str.length() != 0)
     {
         string currentToken = token(str);
-        string copyStr = str;
-        string nextTokenFromCopy = token(copyStr);
-        string tokenAfterNextToken= token(copyStr);
-        if ((currentToken == "(" || currentToken == "*" || currentToken == "/" || currentToken == "+") && nextTokenFromCopy == "-") {
-            if (isdigit((tokenAfterNextToken)[0])) {
-                int tempRes = stoi(tokenAfterNextToken)*(-1);
-                numbers.push(tempRes);
-                operations.push(currentToken[0]);
-                token(str);
-                token(str);
-            }
-        }
-    	else if (currentToken.length()>=1 && isdigit(currentToken[0])) {
-            numbers.push(stof(currentToken));
+    	if (currentToken.length()>=1 && isdigit(currentToken[0])) {
+    		numbers.push(stof(currentToken));
+    		doOperation(numbers, operations);
         }
         else {
             if (operations.empty()) {
@@ -46,7 +26,11 @@ double calculate(string str) {
             else {
                 operation currentOperation(currentToken[0]);
                 operation previousOperation(operations.top());
-                if (previousOperation.name == '(' && currentOperation.name == ')') {
+            	if((currentOperation.name=='m')||(currentOperation.name=='p'))
+            	{
+            		operations.push(currentOperation.name);
+            	}
+                else if (previousOperation.name == '(' && currentOperation.name == ')') {
                     operations.pop();
                 }
                 else if((currentOperation.name == '(')||(previousOperation.name == '('))
@@ -57,7 +41,7 @@ double calculate(string str) {
             	{
             		while (previousOperation.name!='(')
                     {
-		                doBinaryOperation(numbers, operations, previousOperation.name);
+		                doOperation(numbers, operations);
 			            if(!operations.empty()) previousOperation = operations.top();
 				    }
 					operations.pop();
@@ -66,7 +50,7 @@ double calculate(string str) {
                 {
 	                while (currentOperation.priority <= previousOperation.priority &&  !(operations.empty()) &&(previousOperation.name!='('))
                     {
-		                doBinaryOperation(numbers, operations, previousOperation.name);
+		                doOperation(numbers, operations);
                         if (!operations.empty()) previousOperation = operations.top();
 				    }
 					operations.push(currentToken[0]);
@@ -76,7 +60,7 @@ double calculate(string str) {
         }
     }
     while (!operations.empty()) {
-        doBinaryOperation(numbers, operations, operations.top());
+        doOperation(numbers, operations);
     }
     return numbers.top();
 }
