@@ -10,33 +10,42 @@ using namespace std;
 double calculate(string str) {
     stack<double> numbers;
     stack<char> operations;
-	for(int i=0;i<static_cast<int>(str.length())-1;i++)
+	int bracketSign=1;
+	string copyStr=str;
+	string currentCopyToken=token(copyStr);
+	string nextCopyToken=token(copyStr);
+	if((currentCopyToken=="-")&&(isdigit(nextCopyToken[0])))
+    {
+    	numbers.push(-1*stof(nextCopyToken));
+    	token(str);
+		token(str);
+    }
+    else if((currentCopyToken=="-")&&(nextCopyToken=="("))
 	{
-        if((str[i]=='(')&&(str[i+1]=='-'))
-	    {
-		    str.insert(i+1, "0");
-	    }
-	}
-	if(str[0]=='-')
-	{
-		str='0'+str;
+		bracketSign*=-1;
+    	token(str);
 	}
     while (str.length() != 0)
     {
-        string currentToken = token(str);
-        string copyStr = str;
-        string nextTokenFromCopy = token(copyStr);
-        string tokenAfterNextToken= token(copyStr);
-        if ((currentToken == "(" || currentToken == "*" || currentToken == "/" || currentToken == "+") && nextTokenFromCopy == "-") {
-            if (isdigit((tokenAfterNextToken)[0])) {
-                int tempRes = stoi(tokenAfterNextToken)*(-1);
-                numbers.push(tempRes);
-                operations.push(currentToken[0]);
-                token(str);
-                token(str);
-            }
+    	string currentToken = token(str);
+    	copyStr=str;
+		currentCopyToken=token(copyStr);
+		nextCopyToken=token(copyStr);
+    	if((currentToken=="(")&&(currentCopyToken=="-")&&(nextCopyToken=="("))
+    	{
+    		bracketSign*=-1;
+    		token(str);
+    	}
+        else if((currentToken=="(")&&(currentCopyToken=="-")&&(isdigit(nextCopyToken[0])))
+        {
+	        operations.push(currentToken[0]);
+        	double number=-1*stof(nextCopyToken);
+        	numbers.push(number);
+        	token(str);
+        	token(str);
+        	currentToken=token(str);	
         }
-    	else if (currentToken.length()>=1 && isdigit(currentToken[0])) {
+		if (currentToken.length()>=1 && isdigit(currentToken[0])) {
             numbers.push(stof(currentToken));
         }
         else {
@@ -48,6 +57,10 @@ double calculate(string str) {
                 operation previousOperation(operations.top());
                 if (previousOperation.name == '(' && currentOperation.name == ')') {
                     operations.pop();
+                	double number=numbers.top();
+                	numbers.pop();
+                	numbers.push(number*bracketSign);
+                	bracketSign=1;
                 }
                 else if((currentOperation.name == '(')||(previousOperation.name == '('))
             	{
@@ -61,6 +74,10 @@ double calculate(string str) {
 			            if(!operations.empty()) previousOperation = operations.top();
 				    }
 					operations.pop();
+                	double number=numbers.top();
+                	numbers.pop();
+                	numbers.push(number*bracketSign);
+                	bracketSign=1;
             	}
                 else
                 {
