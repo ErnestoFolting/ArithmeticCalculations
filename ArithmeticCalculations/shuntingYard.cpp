@@ -17,9 +17,7 @@ double calculate(string str) {
 	string nextCopyToken=token(copyStr);
 	if((currentCopyToken=="-")&&(isdigit(nextCopyToken[0])))
     {
-    	numbers.push(-1*stof(nextCopyToken));
-    	token(str);
-		token(str);
+        str='0'+str;
     }
     else if((currentCopyToken=="-")&&(nextCopyToken=="("))
 	{
