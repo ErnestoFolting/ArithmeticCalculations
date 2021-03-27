@@ -10,6 +10,7 @@ using namespace std;
 double calculate(string str) {
     stack<double> numbers;
     stack<char> operations;
+	cout<<str<<endl;
 	int bracketSign=1;
 	string copyStr=str;
 	string currentCopyToken=token(copyStr);
@@ -56,11 +57,16 @@ double calculate(string str) {
                 operation currentOperation(currentToken[0]);
                 operation previousOperation(operations.top());
                 if (previousOperation.name == '(' && currentOperation.name == ')') {
-                    operations.pop();
-                	double number=numbers.top();
-                	numbers.pop();
-                	numbers.push(number*bracketSign);
-                	bracketSign=1;
+                	operations.pop();
+                	copyStr=str;
+                	currentCopyToken=token(copyStr);
+                    if(currentCopyToken!="^")
+                	{
+                		double number=numbers.top();
+                		numbers.pop();
+                		numbers.push(number*bracketSign);
+                		bracketSign=1;
+                	}
                 }
                 else if((currentOperation.name == '(')||(previousOperation.name == '('))
             	{
@@ -74,17 +80,30 @@ double calculate(string str) {
 			            if(!operations.empty()) previousOperation = operations.top();
 				    }
 					operations.pop();
-                	double number=numbers.top();
-                	numbers.pop();
-                	numbers.push(number*bracketSign);
-                	bracketSign=1;
+                	copyStr=str;
+                	currentCopyToken=token(copyStr);
+                    if(currentCopyToken!="^")
+                	{
+                		double number=numbers.top();
+                		numbers.pop();
+                		numbers.push(number*bracketSign);
+                		bracketSign=1;
+                	}
             	}
                 else
                 {
 	                while (currentOperation.priority <= previousOperation.priority &&  !(operations.empty()) &&(previousOperation.name!='('))
                     {
+	                	char operationTop=previousOperation.name;
 		                doBinaryOperation(numbers, operations, previousOperation.name);
                         if (!operations.empty()) previousOperation = operations.top();
+	                	if(operationTop=='^')
+	                	{
+	                		double number=numbers.top();
+                			numbers.pop();
+                			numbers.push(number*bracketSign);
+                			bracketSign=1;
+	                	}
 				    }
 					operations.push(currentToken[0]);
                 }
