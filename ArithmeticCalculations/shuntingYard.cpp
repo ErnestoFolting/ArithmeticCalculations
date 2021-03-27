@@ -18,7 +18,7 @@ double calculate(string str) {
     {
         str='0'+str;
     }
-    else if((currentCopyToken=="-")&&(nextCopyToken=="("))
+    else if((currentCopyToken=="-")&&((nextCopyToken=="(")||(nextCopyToken=="[")))
 	{
 		bracketSign*=-1;
     	token(str);
@@ -29,12 +29,12 @@ double calculate(string str) {
     	copyStr=str;
 		currentCopyToken=token(copyStr);
 		nextCopyToken=token(copyStr);
-    	if((currentToken=="(")&&(currentCopyToken=="-")&&(nextCopyToken=="("))
+    	if(((currentToken=="(")||(currentToken=="["))&&(currentCopyToken=="-")&&((nextCopyToken=="(")||(nextCopyToken=="[")))
     	{
     		bracketSign*=-1;
     		token(str);
     	}
-        else if((currentToken=="(")&&(currentCopyToken=="-")&&(isdigit(nextCopyToken[0])))
+        else if(((currentToken=="(")||(currentToken=="["))&&(currentCopyToken=="-")&&(isdigit(nextCopyToken[0])))
         {
 	        operations.push(currentToken[0]);
         	double number=-1*stof(nextCopyToken);
@@ -53,7 +53,7 @@ double calculate(string str) {
             else {
                 operation currentOperation(currentToken[0]);
                 operation previousOperation(operations.top());
-                if (previousOperation.name == '(' && currentOperation.name == ')') {
+                if (((previousOperation.name == '(' && currentOperation.name == ')'))||((previousOperation.name == '[' && currentOperation.name == ']'))) {
                 	operations.pop();
                 	copyStr=str;
                 	currentCopyToken=token(copyStr);
@@ -65,7 +65,7 @@ double calculate(string str) {
                 		bracketSign=1;
                 	}
                 }
-                else if((currentOperation.name == '(')||(previousOperation.name == '('))
+                else if((currentOperation.name == '(')||(currentOperation.name == '[')||(previousOperation.name == '(')||(previousOperation.name == '['))
             	{
             		operations.push(currentOperation.name);
             	}
@@ -87,9 +87,27 @@ double calculate(string str) {
                 		bracketSign=1;
                 	}
             	}
+            	else if(currentOperation.name==']')
+            	{
+            		while (previousOperation.name!='[')
+                    {
+		                doBinaryOperation(numbers, operations, previousOperation.name);
+			            if(!operations.empty()) previousOperation = operations.top();
+				    }
+					operations.pop();
+                	copyStr=str;
+                	currentCopyToken=token(copyStr);
+                    if(currentCopyToken!="^")
+                	{
+                		double number=numbers.top();
+                		numbers.pop();
+                		numbers.push(number*bracketSign);
+                		bracketSign=1;
+                	}
+            	}
                 else
                 {
-	                while (currentOperation.priority <= previousOperation.priority &&  !(operations.empty()) &&(previousOperation.name!='('))
+	                while (currentOperation.priority <= previousOperation.priority &&  !(operations.empty()) &&((previousOperation.name!='(')||(previousOperation.name!='[')))
                     {
 	                	char operationTop=previousOperation.name;
 		                doBinaryOperation(numbers, operations, previousOperation.name);
