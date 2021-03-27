@@ -10,7 +10,6 @@ using namespace std;
 double calculate(string str) {
     stack<double> numbers;
     stack<char> operations;
-	cout<<str<<endl;
 	int bracketSign=1;
 	string copyStr=str;
 	string currentCopyToken=token(copyStr);
