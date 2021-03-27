@@ -107,7 +107,7 @@ double calculate(string str) {
             	}
                 else
                 {
-	                while (currentOperation.priority <= previousOperation.priority &&  !(operations.empty()) &&((previousOperation.name!='(')||(previousOperation.name!='[')))
+	                while (currentOperation.priority <= previousOperation.priority &&  !(operations.empty()) &&((previousOperation.name!='(')&&(previousOperation.name!='[')))
                     {
 	                	char operationTop=previousOperation.name;
 		                doBinaryOperation(numbers, operations, previousOperation.name);
