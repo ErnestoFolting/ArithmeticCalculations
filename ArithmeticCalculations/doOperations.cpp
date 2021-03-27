@@ -17,13 +17,23 @@ double operate(double x1, double x2, char operation ) {
 	}
 }
 
-void doBinaryOperation(stack<double>& numbers, stack<char>& operations, char operation)
+void doOperation(stack<double>& numbers, stack<char>& operations, char operation)
 {
-	double currentNumber = numbers.top();
-    numbers.pop();
-    double previousNumber = numbers.top();
-    numbers.pop();
-	double result = operate(previousNumber, currentNumber, operation);
-	numbers.push(result);
 	operations.pop();
+	if((operation=='-')&&((operations.empty())||(operations.top()=='(')||(operations.top()=='[')))
+	{
+		double currentNumber = numbers.top();
+		numbers.pop();
+		double result=currentNumber*(-1);
+		numbers.push(result);
+	}
+	else
+	{
+		double currentNumber = numbers.top();
+		numbers.pop();
+		double previousNumber = numbers.top();
+		numbers.pop();
+		double result = operate(previousNumber, currentNumber, operation);
+		numbers.push(result);
+	}
 }
